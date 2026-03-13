@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafiki Help Me International</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Source+Sans+Pro:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+  --bg-color: #f8fafc;        /* soft white */
+  --surface-color: #ffffff;   /* card color */
+  --text-color: #1e293b;      /* dark readable text */
+  --primary-color: #22c55e;   /* calm green for hope */
+  --secondary-color: #64748b; /* neutral gray */
+    }
+    .font-heading { font-family: 'Playfair Display', serif; }
+    .font-body { font-family: 'Source Sans Pro', sans-serif; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6); }
+    }
+    @keyframes count-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .count-animate { animation: count-up 0.8s ease-out forwards; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-gradient {
+    background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 60%);
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(245, 158, 11, 0.15);
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--surface-color);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideIn 0.3s ease-out;
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary-color);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      animation: slideIn 0.3s ease-out;
+      z-index: 1001;
+    }
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-image {
+      border-radius: 1rem;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body" style="background-color: var(--bg-color); color: var(--text-color);">
+  <div id="app" class="w-full h-full overflow-auto">
+   <!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style="background: rgba(131, 127, 236, 0.9);">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-full flex items-center justify-center pulse-glow" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+       <i data-lucide="heart-handshake" class="w-6 h-6 text-white"></i>
+      </div>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="hover:text-amber-400 transition-colors">About</a> <a href="#impact" class="hover:text-amber-400 transition-colors">Impact</a> <a href="#mission" class="hover:text-amber-400 transition-colors">Mission</a> <button id="nav-donate-btn" class="px-6 py-2 rounded-full font-semibold transition-all hover:scale-105" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;"> Donate Now </button>
+     </div><button class="md:hidden" style="color: var(--primary-color);"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+   </nav><!-- Hero Section -->
+   <section class="hero-gradient min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <div class="absolute inset-0 overflow-hidden">
+     <div class="absolute top-20 left-10 w-72 h-72 rounded-full opacity-10" style="background: var(--primary-color); filter: blur(100px);"></div>
+     <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-10" style="background: var(--primary-color); filter: blur(120px);"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+     <div class="float-animation mb-8">
+      <div class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-6 shadow-lg">
+       <img src="LOGO.JPG.jpeg" alt="Rafiki Help Me International Logo" class="w-full h-full object-cover">
+    </div>
+     <h1 id="hero-org-name" class="font-heading text-5xl md:text-7xl font-bold mb-4">Rafiki Help Me <span class="gradient-text">International</span></h1>
+     <p id="hero-slogan" class="text-2xl md:text-3xl font-light mb-8" style="color: var(--secondary-color);">"A Friend Can Need Help"</p>
+     <p id="hero-mission" class="text-xl max-w-2xl mx-auto mb-12" style="color: #94a3b8;">Dedicated to helping the needy and bringing hope to communities around the world through compassion, action, and sustainable support.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button id="hero-donate-btn" class="px-10 py-4 rounded-full font-bold text-lg transition-all hover:scale-105 hover:shadow-2xl" style="background: linear-gradient(135deg, #8cdcf5, #8be4f6); color: white;"> <span class="flex items-center justify-center gap-2"> <i data-lucide="heart" class="w-5 h-5"></i> Make a Donation </span> </button> <a href="#about" class="px-10 py-4 rounded-full font-bold text-lg border-2 transition-all hover:scale-105" style="border-color: var(--primary-color); color: var(--primary-color);"> Learn More </a>
+     </div>
+    </div>
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+     <i data-lucide="chevron-down" class="w-8 h-8" style="color: var(--primary-color);"></i>
+    </div>
+   </section><!-- About Us Section -->
+   <section id="about" class="py-24 px-6" style="background-color: var(--surface-color);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-widest mb-4" style="color: var(--primary-color);">Who We Are</p>
+      <h2 id="about-title" class="font-heading text-4xl md:text-5xl font-bold mb-6">About Us</h2>
+      <div class="w-24 h-1 mx-auto rounded-full" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div id="about-images" class="relative">
+       <div class="w-full aspect-square rounded-3xl overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155);"><img id="about-image-main" src="RFK2.JPG.jpeg" alt="Community together" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed'); this.style.background='#334155'; this.style.display='none';">
+       </div>
+       <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-2xl flex items-center justify-center" style="background: var(--primary-color);">
+        <div class="text-center">
+         <p class="text-3xl font-bold">10+</p>
+         <p class="text-sm">Years</p>
+        </div>
+       </div>
+      </div>
+      <div>
+       <h3 class="font-heading text-3xl font-semibold mb-6">Our Story</h3>
+       <p class="text-lg mb-6 leading-relaxed" style="color: #94a3b8;"><strong style="color: var(--primary-color);">Rafiki</strong> means "friend" in Swahili. Founded on the belief that everyone deserves a helping hand, Rafiki Help Me International has been a beacon of hope for communities in need since our inception.</p>
+       <p class="text-lg mb-6 leading-relaxed" style="color: #94a3b8;">We started with a simple vision: to create a world where no one is left behind. Today, we work across multiple countries, providing essential support to those who need it most — from food and shelter to education and healthcare.</p>
+       <p class="text-lg mb-8 leading-relaxed" style="color: #94a3b8;">Our approach is rooted in dignity, respect, and sustainable impact. We don't just provide aid; we build partnerships that empower communities to thrive long after our direct involvement ends.</p>
+       <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl card-hover transition-all duration-300" style="background: var(--bg-color);">
+         <i data-lucide="globe" class="w-8 h-8 mb-2" style="color: var(--primary-color);"></i>
+         <p class="font-semibold">Global Reach</p>
+         <p class="text-sm" style="color: var(--secondary-color);">15+ Countries</p>
+        </div>
+        <div class="p-4 rounded-xl card-hover transition-all duration-300" style="background: var(--bg-color);">
+         <i data-lucide="heart" class="w-8 h-8 mb-2" style="color: var(--primary-color);"></i>
+         <p class="font-semibold">Volunteers</p>
+         <p class="text-sm" style="color: var(--secondary-color);">500+ Active</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Photo Gallery Section -->
+   <section class="py-24 px-6" style="background-color: var(--bg-color);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-widest mb-4" style="color: var(--primary-color);">Our Work</p>
+      <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Stories From the Field</h2>
+      <div class="w-24 h-1 mx-auto rounded-full" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+     </div>
+     <div id="photo-gallery" class="image-gallery">
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK4.JPG.jpeg" alt="Community aid" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&amp;h=450&amp;fit=crop" alt="Children in school" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK2.JPG.jpeg" alt="Community building" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK6.JPG.jpeg" alt="Healthcare support" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK5.JPG.jpeg" alt="Water wells" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK1.JPG.jpeg" alt="Family support" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK7.JPG.jpeg" alt="Education support" loading="lazy" class="gallery-image w-full h-full object-cover" onerror="this.style.background='#334155';">
+      </div>
+      <div class="rounded-lg overflow-hidden" style="background: linear-gradient(135deg, #1e293b, #334155); aspect-ratio: 4/3;"><img src="RFK9.JPG.jpeg" alt="healing " loading="lazy" class="gallery-image w-full h-full object cover" onerror="this.style.background='#334155';">
+      </div>
+      
+     </div>
+     <div class="text-center mt-12">
+      <p style="color: #94a3b8;" class="text-lg">Want to add your own photos? Replace the image URLs in the code with your own.</p>
+     </div>
+    </div>
+   </section><!-- Values Section -->
+   <section class="py-24 px-6" style="background-color: var(--surface-color);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-widest mb-4" style="color: var(--primary-color);">What Drives Us</p>
+      <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Our Core Values</h2>
+      <div class="w-24 h-1 mx-auto rounded-full" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-8 rounded-3xl text-center card-hover transition-all duration-300" style="background: var(--bg-color);">
+       <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));">
+        <i data-lucide="hand-heart" class="w-10 h-10" style="color: var(--primary-color);"></i>
+       </div>
+       <h3 class="font-heading text-2xl font-semibold mb-4">Compassion</h3>
+       <p style="color: #94a3b8;">We lead with empathy and understanding, treating every person we serve with dignity and respect.</p>
+      </div>
+      <div class="p-8 rounded-3xl text-center card-hover transition-all duration-300" style="background: var(--bg-color);">
+       <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));">
+        <i data-lucide="shield-check" class="w-10 h-10" style="color: var(--primary-color);"></i>
+       </div>
+       <h3 class="font-heading text-2xl font-semibold mb-4">Integrity</h3>
+       <p style="color: #94a3b8;">Transparency and accountability guide every decision we make and every dollar we spend.</p>
+      </div>
+      <div class="p-8 rounded-3xl text-center card-hover transition-all duration-300" style="background: var(--bg-color);">
+       <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));">
+        <i data-lucide="sparkles" class="w-10 h-10" style="color: var(--primary-color);"></i>
+       </div>
+       <h3 class="font-heading text-2xl font-semibold mb-4">Sustainability</h3>
+       <p style="color: #94a3b8;">We create lasting change through programs that empower communities to become self-sufficient.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Impact Section -->
+   <section id="impact" class="py-24 px-6" style="background: linear-gradient(135deg, #4f89e6, #4670d2);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-widest mb-4" style="color: var(--primary-color);">Making a Difference</p>
+      <h2 id="impact-title" class="font-heading text-4xl md:text-5xl font-bold mb-6">Our Impact</h2>
+      <div class="w-24 h-1 mx-auto rounded-full" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+      <p class="mt-6 text-lg max-w-2xl mx-auto" style="color: #94a3b8;">Every number represents a life changed, a family supported, and a community strengthened.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div class="p-6 rounded-3xl text-center count-animate" style="background: var(--surface-color); animation-delay: 0.1s;">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <i data-lucide="users" class="w-8 h-8 text-white"></i>
+       </div>
+       <p class="text-4xl md:text-5xl font-bold gradient-text">50K+</p>
+       <p class="mt-2" style="color: var(--secondary-color);">Lives Touched</p>
+      </div>
+      <div class="p-6 rounded-3xl text-center count-animate" style="background: var(--surface-color); animation-delay: 0.2s;">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <i data-lucide="home" class="w-8 h-8 text-white"></i>
+       </div>
+       <p class="text-4xl md:text-5xl font-bold gradient-text">1,200</p>
+       <p class="mt-2" style="color: var(--secondary-color);">Families Housed</p>
+      </div>
+      <div class="p-6 rounded-3xl text-center count-animate" style="background: var(--surface-color); animation-delay: 0.3s;">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <i data-lucide="graduation-cap" class="w-8 h-8 text-white"></i>
+       </div>
+       <p class="text-4xl md:text-5xl font-bold gradient-text">8,500</p>
+       <p class="mt-2" style="color: var(--secondary-color);">Children Educated</p>
+      </div>
+      <div class="p-6 rounded-3xl text-center count-animate" style="background: var(--surface-color); animation-delay: 0.4s;">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <i data-lucide="utensils" class="w-8 h-8 text-white"></i>
+       </div>
+       <p class="text-4xl md:text-5xl font-bold gradient-text">2M+</p>
+       <p class="mt-2" style="color: var(--secondary-color);">Meals Provided</p>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="p-8 rounded-3xl card-hover transition-all duration-300" style="background: var(--surface-color);">
+       <div class="flex items-start gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+         👨‍👩‍👧
+        </div>
+        <div>
+         <h4 class="font-heading text-xl font-semibold">The Kamau Family</h4>
+         <p class="text-sm" style="color: var(--primary-color);">Kenya</p>
+        </div>
+       </div>
+       <p class="italic mb-4" style="color: #94a3b8;">"Rafiki didn't just give us food — they gave us hope. Our children are now in school, and we have a small business that supports our family. We went from surviving to thriving."</p>
+       <div class="flex items-center gap-1" style="color: var(--primary-color);">
+        <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+       </div>
+      </div>
+      <div class="p-8 rounded-3xl card-hover transition-all duration-300" style="background: var(--surface-color);">
+       <div class="flex items-start gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-2xl" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+         🏫
+        </div>
+        <div>
+         <h4 class="font-heading text-xl font-semibold">Sunrise Community School</h4>
+         <p class="text-sm" style="color: var(--primary-color);">Uganda</p>
+        </div>
+       </div>
+       <p class="italic mb-4" style="color: #94a3b8;">"With Rafiki's support, we built a school that now serves 300 children. These kids have access to education, clean water, and daily meals. The transformation is incredible."</p>
+       <div class="flex items-center gap-1" style="color: var(--primary-color);">
+        <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i> <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Mission Section -->
+   <section id="mission" class="py-24 px-6" style="background-color: var(--bg-color);">
+    <div class="max-w-6xl mx-auto">
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+       <p class="text-sm uppercase tracking-widest mb-4" style="color: var(--primary-color);">Our Purpose</p>
+       <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Our Mission</h2>
+       <div class="w-24 h-1 rounded-full mb-8" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+       <p class="text-xl mb-6 leading-relaxed" style="color: #94a3b8;"><span class="font-semibold" style="color: var(--text-color);">Helping the needy</span> isn't just what we do — it's who we are.</p>
+       <p class="text-lg mb-8 leading-relaxed" style="color: #94a3b8;">We believe that a friend can need help, and when they do, we must be there. Our mission is to provide immediate relief and long-term sustainable support to communities facing poverty, disaster, and hardship.</p>
+       <div class="space-y-4">
+        <div class="flex items-start gap-4">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--primary-color);">
+          <i data-lucide="check" class="w-4 h-4 text-white"></i>
+         </div>
+         <p>Provide emergency food, water, and shelter to those in crisis</p>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--primary-color);">
+          <i data-lucide="check" class="w-4 h-4 text-white"></i>
+         </div>
+         <p>Fund education and healthcare for underserved communities</p>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--primary-color);">
+          <i data-lucide="check" class="w-4 h-4 text-white"></i>
+         </div>
+         <p>Empower families with skills training and microfinance</p>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--primary-color);">
+          <i data-lucide="check" class="w-4 h-4 text-white"></i>
+         </div>
+         <p>Build sustainable infrastructure for lasting change</p>
+        </div>
+       </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+       <div class="space-y-4">
+        <div class="p-6 rounded-2xl" style="background: var(--surface-color);">
+         <i data-lucide="droplets" class="w-10 h-10 mb-3" style="color: var(--primary-color);"></i>
+         <p class="font-semibold">Clean Water</p>
+         <p class="text-sm" style="color: var(--secondary-color);">120 wells built</p>
+        </div>
+        <div class="p-6 rounded-2xl" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+         <i data-lucide="stethoscope" class="w-10 h-10 mb-3 text-white"></i>
+         <p class="font-semibold">Healthcare</p>
+         <p class="text-sm opacity-80">15 clinics supported</p>
+        </div>
+       </div>
+       <div class="space-y-4 mt-8">
+        <div class="p-6 rounded-2xl" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+         <i data-lucide="book-open" class="w-10 h-10 mb-3 text-white"></i>
+         <p class="font-semibold">Education</p>
+         <p class="text-sm opacity-80">42 schools funded</p>
+        </div>
+        <div class="p-6 rounded-2xl" style="background: var(--surface-color);">
+         <i data-lucide="briefcase" class="w-10 h-10 mb-3" style="color: var(--primary-color);"></i>
+         <p class="font-semibold">Livelihoods</p>
+         <p class="text-sm" style="color: var(--secondary-color);">3,000+ jobs created</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section class="py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+    <div class="absolute inset-0 overflow-hidden">
+     <div class="absolute top-0 left-0 w-64 h-64 rounded-full opacity-20" style="background: white; filter: blur(60px);"></div>
+     <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-20" style="background: white; filter: blur(80px);"></div>
+    </div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6 text-white">Be Someone's Rafiki Today</h2>
+     <p class="text-xl mb-10 text-white opacity-90">A friend can need help. Your donation can change a life, support a family, and transform a community. Join us in making a difference.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button id="cta-donate-btn" class="px-10 py-4 rounded-full font-bold text-lg transition-all hover:scale-105" style="background: var(--bg-color); color: var(--primary-color);"> <span class="flex items-center justify-center gap-2"> <i data-lucide="heart" class="w-5 h-5"></i> Donate Now </span> </button> <button class="px-10 py-4 rounded-full font-bold text-lg border-2 border-white text-white transition-all hover:scale-105 hover:bg-white hover:text-amber-600"> <span class="flex items-center justify-center gap-2"> <i data-lucide="users" class="w-5 h-5"></i> Become a Volunteer </span> </button>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-16 px-6" style="background-color: var(--surface-color); border-top: 1px solid rgba(100, 116, 139, 0.2);">
+    <div class="max-w-6xl mx-auto">
+     <div class="grid md:grid-cols-4 gap-12 mb-12">
+      <div class="md:col-span-2">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 rounded-full overflow-hidden">
+        <img src="LOGO.JPG.jpeg" alt="Rafiki Help Me International Logo" class="w-full h-full object-cover">
+        </div>
+        <div>
+         <h3 class="font-heading font-bold text-lg">Rafiki Help Me International</h3>
+         <p class="text-sm" style="color: var(--secondary-color);">A Friend Can Need Help</p>
+        </div>
+       </div>
+       <p class="mb-6" style="color: #94a3b8;">Together, we can build a world where no one is left behind. Every contribution, big or small, makes a difference.</p>
+       <div class="flex gap-4">
+        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background: var(--bg-color);"> <i data-lucide="facebook" class="w-5 h-5" style="color: var(--primary-color);"></i> </a> <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background: var(--bg-color);"> <i data-lucide="twitter" class="w-5 h-5" style="color: var(--primary-color);"></i> </a> <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background: var(--bg-color);"> <i data-lucide="instagram" class="w-5 h-5" style="color: var(--primary-color);"></i> </a> <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background: var(--bg-color);"> <i data-lucide="linkedin" class="w-5 h-5" style="color: var(--primary-color);"></i> </a>
+       </div>
+      </div>
+      <div>
+       <h4 class="font-semibold mb-4" style="color: var(--primary-color);">Quick Links</h4>
+       <ul class="space-y-3" style="color: #94a3b8;">
+        <li><a href="#about" class="hover:text-amber-400 transition-colors">About Us</a></li>
+        <li><a href="#impact" class="hover:text-amber-400 transition-colors">Our Impact</a></li>
+        <li><a href="#mission" class="hover:text-amber-400 transition-colors">Our Mission</a></li>
+        <li><a href="#" class="hover:text-amber-400 transition-colors">Get Involved</a></li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-semibold mb-4" style="color: var(--primary-color);">Contact Us</h4>
+       <ul class="space-y-3" style="color: #94a3b8;">
+        <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4" style="color: var(--primary-color);"></i> info@rafikihelpme.org</li>
+        <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4" style="color: var(--primary-color);"></i> +254 714439982</li>
+        <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4" style="color: var(--primary-color);"></i> NAIROBI KENYA </li>
+       </ul>
+      </div>
+     </div>
+     <div class="pt-8 text-center" style="border-top: 1px solid rgba(100, 116, 139, 0.2);">
+      <p style="color: var(--secondary-color);">© 2024 Rafiki Help Me International. All rights reserved. Made with <span style="color: var(--primary-color);">❤</span> for humanity.</p>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Donation Modal -->
+  <div id="donation-modal" class="modal-overlay">
+   <div class="modal-content">
+    <div class="flex justify-between items-center mb-6">
+     <h2 class="font-heading text-3xl font-bold">Support Our Mission</h2><button id="close-modal" class="text-gray-400 hover:text-white text-2xl leading-none">×</button>
+    </div>
+    <form id="donation-form">
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">Full Name</label> <input type="text" id="donor-name" required placeholder="Your name" class="w-full px-4 py-2 rounded-lg" style="background: var(--bg-color); border: 1px solid rgba(100, 116, 139, 0.3); color: var(--text-color);">
+     </div>
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">Email Address</label> <input type="email" id="donor-email" required placeholder="your@email.com" class="w-full px-4 py-2 rounded-lg" style="background: var(--bg-color); border: 1px solid rgba(100, 116, 139, 0.3); color: var(--text-color);">
+     </div>
+     <div class="mb-4"><label class="block text-sm font-semibold mb-2">Donation Amount</label> <input type="number" id="donation-amount" required placeholder="100" min="1" step="0.01" class="w-full px-4 py-2 rounded-lg" style="background: var(--bg-color); border: 1px solid rgba(100, 116, 139, 0.3); color: var(--text-color);">
+     </div>
+     <div class="mb-6"><label class="block text-sm font-semibold mb-2">Personal Message (Optional)</label> <textarea id="donor-message" placeholder="Share why this cause matters to you..." class="w-full px-4 py-2 rounded-lg" style="background: var(--bg-color); border: 1px solid rgba(100, 116, 139, 0.3); color: var(--text-color);"></textarea>
+     </div>
+     <div class="mb-6"><label class="block text-sm font-semibold mb-3">Choose Payment Method:</label>
+      <div class="space-y-2"><button type="button" id="mpesa-btn" class="w-full px-4 py-3 rounded-lg text-left flex items-center gap-3 transition-all" style="background: var(--bg-color); border: 2px solid var(--primary-color); color: var(--primary-color);"><i data-lucide="smartphone" class="w-5 h-5"></i> M-Pesa (Kenya)</button> <button type="button" id="bank-btn" class="w-full px-4 py-3 rounded-lg text-left flex items-center gap-3 transition-all" style="background: var(--bg-color); border: 2px solid rgba(100, 116, 139, 0.3); color: var(--text-color);"><i data-lucide="credit-card" class="w-5 h-5"></i> Bank Transfer</button>
+      </div>
+     </div><button type="submit" id="submit-donation" class="w-full px-6 py-3 rounded-full font-bold text-lg transition-all hover:scale-105" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;"> Complete Donation </button>
+    </form>
+   </div>
+  </div>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Data SDK handler
+    const dataHandler = {
+      onDataChanged(data) {
+        console.log('Donations received:', data);
+      }
+    };
+
+    // Initialize SDK
+    let donationData = [];
+    let config = {};
+
+    async function initializeSdk() {
+      const initResult = await window.dataSdk.init(dataHandler);
+      if (!initResult.isOk) {
+        console.error('Failed to initialize data SDK');
+      }
+    }
+
+    // Element SDK configuration
+    const defaultConfig = {
+      org_name: 'Rafiki Help Me International',
+      slogan: 'A Friend Can Need Help',
+      mission_text: 'Dedicated to helping the needy and bringing hope to communities around the world through compassion, action, and sustainable support.',
+      about_title: 'About Us',
+      impact_title: 'Our Impact',
+      mpesa_number: '+254700000000',
+      bank_details: 'Bank Name: Example Bank | Account: 1234567890',
+      background_color: '#0f172a',
+      surface_color: '#1e293b',
+      text_color: '#f8fafc',
+      primary_color: '#f59e0b',
+      secondary_color: '#64748b',
+      font_family: 'Source Sans Pro',
+      font_size: 16
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (updatedConfig) => {
+          config = updatedConfig;
+          document.getElementById('nav-org-name').textContent = config.org_name || defaultConfig.org_name;
+          document.getElementById('hero-org-name').innerHTML = (config.org_name || defaultConfig.org_name).replace('International', '<span class="gradient-text">International</span>');
+          document.getElementById('hero-slogan').textContent = `"${config.slogan || defaultConfig.slogan}"`;
+          document.getElementById('hero-mission').textContent = config.mission_text || defaultConfig.mission_text;
+          document.getElementById('about-title').textContent = config.about_title || defaultConfig.about_title;
+          document.getElementById('impact-title').textContent = config.impact_title || defaultConfig.impact_title;
+
+          const root = document.documentElement;
+          root.style.setProperty('--bg-color', config.background_color || defaultConfig.background_color);
+          root.style.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
+          root.style.setProperty('--text-color', config.text_color || defaultConfig.text_color);
+          root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+          root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
+
+          const fontFamily = config.font_family || defaultConfig.font_family;
+          document.querySelectorAll('.font-body').forEach(el => {
+            el.style.fontFamily = `${fontFamily}, sans-serif`;
+          });
+
+          const baseSize = config.font_size || defaultConfig.font_size;
+          document.body.style.fontSize = `${baseSize}px`;
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => window.elementSdk.setConfig({ background_color: v }) },
+            { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => window.elementSdk.setConfig({ surface_color: v }) },
+            { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => window.elementSdk.setConfig({ text_color: v }) },
+            { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => window.elementSdk.setConfig({ primary_color: v }) },
+            { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (v) => window.elementSdk.setConfig({ secondary_color: v }) }
+          ],
+          borderables: [],
+          fontEditable: { get: () => cfg.font_family || defaultConfig.font_family, set: (v) => window.elementSdk.setConfig({ font_family: v }) },
+          fontSizeable: { get: () => cfg.font_size || defaultConfig.font_size, set: (v) => window.elementSdk.setConfig({ font_size: v }) }
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['org_name', cfg.org_name || defaultConfig.org_name],
+          ['slogan', cfg.slogan || defaultConfig.slogan],
+          ['mission_text', cfg.mission_text || defaultConfig.mission_text],
+          ['about_title', cfg.about_title || defaultConfig.about_title],
+          ['impact_title', cfg.impact_title || defaultConfig.impact_title],
+          ['mpesa_number', cfg.mpesa_number || defaultConfig.mpesa_number],
+          ['bank_details', cfg.bank_details || defaultConfig.bank_details]
+        ])
+      });
+    }
+
+    // Modal and donation handling
+    const modal = document.getElementById('donation-modal');
+    const donateButtons = document.querySelectorAll('#hero-donate-btn, #nav-donate-btn, #cta-donate-btn');
+    const closeModal = document.getElementById('close-modal');
+    const form = document.getElementById('donation-form');
+    const mpesaBtn = document.getElementById('mpesa-btn');
+    const bankBtn = document.getElementById('bank-btn');
+    let selectedPaymentMethod = null;
+
+    donateButtons.forEach(btn => btn.addEventListener('click', () => {
+      modal.classList.add('active');
+    }));
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    mpesaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectedPaymentMethod = 'mpesa';
+      mpesaBtn.style.borderColor = 'var(--primary-color)';
+      bankBtn.style.borderColor = 'rgba(100, 116, 139, 0.3)';
+      bankBtn.style.color = 'var(--text-color)';
+    });
+
+    bankBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectedPaymentMethod = 'bank';
+      bankBtn.style.borderColor = 'var(--primary-color)';
+      mpesaBtn.style.borderColor = 'rgba(100, 116, 139, 0.3)';
+      mpesaBtn.style.color = 'var(--text-color)';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!selectedPaymentMethod) {
+        showToast('Please select a payment method');
+        return;
+      }
+
+      const donorName = document.getElementById('donor-name').value;
+      const donorEmail = document.getElementById('donor-email').value;
+      const donationAmount = parseFloat(document.getElementById('donation-amount').value);
+      const message = document.getElementById('donor-message').value;
+
+      const donation = {
+        donor_name: donorName,
+        donor_email: donorEmail,
+        amount: donationAmount,
+        payment_method: selectedPaymentMethod,
+        message: message,
+        donation_date: new Date().toISOString()
+      };
+
+      // Save to data SDK
+      const result = await window.dataSdk.create(donation);
+
+      if (result.isOk) {
+        // Show payment instructions
+        const mpesaNum = config.mpesa_number || defaultConfig.mpesa_number;
+        const bankDetails = config.bank_details || defaultConfig.bank_details;
+
+        if (selectedPaymentMethod === 'mpesa') {
+          showToast(`Send ${donationAmount} KES to ${mpesaNum} and enter reference: ${donorName}`);
+        } else {
+          showToast(`Bank Transfer Details: ${bankDetails}`);
+        }
+
+        // Reset form
+        form.reset();
+        selectedPaymentMethod = null;
+        modal.classList.remove('active');
+      } else {
+        showToast('Error processing donation. Please try again.');
+      }
+    });
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Initialize SDKs
+    initializeSdk();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9db967c747aa4e0f',t:'MTc3MzM4Nzc4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
