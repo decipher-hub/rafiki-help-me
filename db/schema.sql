@@ -1,0 +1,2 @@
+ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255);
+ALTER TABLE donations ADD COLUMN photo_url VARCHAR(255);

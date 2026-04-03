@@ -1,0 +1,7 @@
+# Existing
+node_modules/
+.env
+
+# NEW: Never commit uploaded images
+uploads/
+uploads/**/*
