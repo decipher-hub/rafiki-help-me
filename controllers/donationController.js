@@ -1,4 +1,5 @@
-import { Donation } from '../models/Donation.js';
+import { ValidationError } from 'sequelize';
+import Donation from '../models/Donation.js';
 
 export async function handleCreateDonation(req, res) {
   try {
@@ -20,7 +21,7 @@ export async function handleCreateDonation(req, res) {
       return res.status(400).json({ error: 'amount must be a positive number' });
     }
 
-    const id = await Donation.createDonation({
+    const row = await Donation.create({
       donor_name: String(donor_name).trim(),
       donor_email: String(donor_email).trim(),
       amount: numAmount,
@@ -29,15 +30,26 @@ export async function handleCreateDonation(req, res) {
       photo_url: photo_url != null ? String(photo_url) : null,
     });
 
-    res.status(201).json({ success: true, id });
+    res.status(201).json({ success: true, id: row.id });
   } catch (error) {
+    if (error instanceof ValidationError) {
+      const msg = error.errors?.[0]?.message || 'Validation failed';
+      return res.status(400).json({ error: msg });
+    }
     res.status(500).json({ error: error.message });
   }
 }
 
 export async function handleListDonations(req, res) {
   try {
-    const donations = await Donation.listDonations(Number(req.query.limit));
+    const raw = Number(req.query.limit);
+    const safeLimit = Math.min(Math.max(Number.isFinite(raw) ? raw : 50, 1), 200);
+
+    const donations = await Donation.findAll({
+      order: [['createdAt', 'DESC']],
+      limit: safeLimit,
+    });
+
     res.json({ donations });
   } catch (error) {
     res.status(500).json({ error: error.message });

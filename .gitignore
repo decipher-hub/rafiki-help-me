@@ -1,7 +1,11 @@
-# Existing
+# Ignore Node.js modules
 node_modules/
+# Ignore environment variable files
 .env
-
+# Ignore macOS system files
+.DS_Store
 # NEW: Never commit uploaded images
 uploads/
 uploads/**/*
+# Ignore log files
+*.log

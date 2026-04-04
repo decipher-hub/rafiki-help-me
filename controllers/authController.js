@@ -1,6 +1,31 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/User.js';
+import { UniqueConstraintError, ValidationError } from 'sequelize';
+import User from '../models/User.js';
+
+function requireJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('Server missing JWT_SECRET in .env');
+  }
+  return secret;
+}
+
+function buildAuthPayload(user) {
+  const secret = requireJwtSecret();
+  const token = jwt.sign({ userId: user.id, email: user.email }, secret, {
+    expiresIn: '7d',
+  });
+  return {
+    token,
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      avatar_url: user.avatar_url,
+    },
+  };
+}
 
 export async function handleSignup(req, res) {
   try {
@@ -10,16 +35,35 @@ export async function handleSignup(req, res) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    const userId = await User.createUser(email, password, name);
+    const user = await User.create({
+      email,
+      password,
+      name: name?.trim() || null,
+    });
 
-    res.status(201).json({ success: true, userId });
+    const { token, user: safeUser } = buildAuthPayload(user);
+
+    res.status(201).json({
+      success: true,
+      userId: user.id,
+      token,
+      user: safeUser,
+    });
   } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error.message?.includes('JWT_SECRET')) {
+      return res.status(500).json({ error: error.message });
+    }
+    if (error instanceof UniqueConstraintError) {
       return res.status(409).json({ error: 'That email is already registered' });
     }
-    const status = error.message?.includes('Invalid') || error.message?.includes('Password')
-      ? 400
-      : 500;
+    if (error instanceof ValidationError) {
+      const msg = error.errors?.[0]?.message || 'Validation failed';
+      return res.status(400).json({ error: msg });
+    }
+    const status =
+      error.message?.includes('Invalid') || error.message?.includes('Password')
+        ? 400
+        : 500;
     res.status(status).json({ error: error.message });
   }
 }
@@ -32,7 +76,7 @@ export async function handleLogin(req, res) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    const user = await User.getUserByEmailWithPassword(email);
+    const user = await User.findByEmailWithPassword(email);
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -42,27 +86,16 @@ export async function handleLogin(req, res) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      return res.status(500).json({ error: 'Server missing JWT_SECRET in .env' });
-    }
-
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      secret,
-      { expiresIn: '7d' }
-    );
+    const { token, user: safeUser } = buildAuthPayload(user);
 
     res.json({
       token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        avatar_url: user.avatar_url,
-      },
+      user: safeUser,
     });
   } catch (error) {
+    if (error.message?.includes('JWT_SECRET')) {
+      return res.status(500).json({ error: error.message });
+    }
     res.status(500).json({ error: error.message });
   }
 }

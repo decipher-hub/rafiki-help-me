@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up — Rafiki Help Me</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body class="auth-page">
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">❤</span>
+          <span>Rafiki Help Me</span>
+        </a>
+        <nav class="nav-links" aria-label="Auth">
+          <a href="/">Home</a>
+          <a class="btn btn-ghost" href="/login.html">Log in</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-main container">
+      <section class="auth-panel" aria-labelledby="signup-title">
+        <h1 id="signup-title">Create your account</h1>
+        <p class="auth-lead">We use your email for receipts and updates. Password must be at least 6 characters.</p>
+
+        <div
+          class="auth-msg"
+          data-auth-message
+          role="alert"
+          aria-live="polite"
+          hidden
+        ></div>
+
+        <form id="signup-form" class="auth-form" novalidate>
+          <label for="name">Name <span class="optional">(optional)</span></label>
+          <input type="text" id="name" name="name" autocomplete="name" />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="new-password" required minlength="6" />
+
+          <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+        </form>
+
+        <p class="auth-footer">
+          Already have an account?
+          <a href="/login.html">Log in</a>
+        </p>
+      </section>
+    </main>
+
+    <script src="/js/auth.js" defer></script>
+  </body>
+</html>

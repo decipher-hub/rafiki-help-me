@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Rafiki Help Me International — compassion, action, and sustainable support for communities in need."
+    />
+    <title>Rafiki Help Me International</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">❤</span>
+          <span>Rafiki Help Me</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          Menu
+        </button>
+
+        <nav class="nav-links" id="site-nav" data-nav-links aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#impact">Impact</a>
+          <a href="#donate">Donate</a>
+          <a href="/login.html">Log in</a>
+          <a class="btn btn-primary" href="/signup.html">Sign up</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">International nonprofit</span>
+            <h1>A friend can need help — <span style="color: var(--primary)">be someone’s Rafiki</span></h1>
+            <p class="lead">
+              We bring food, shelter, education, and hope to families facing hardship. Transparent giving. Local
+              partnerships. Lasting change.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#donate">Make a donation</a>
+              <a class="btn btn-ghost" href="#about">Learn our story</a>
+            </div>
+          </div>
+          <div class="hero-card" aria-labelledby="card-heading">
+            <p id="card-heading" style="margin: 0 0 0.5rem; font-weight: 700">Why give with us</p>
+            <p style="margin: 0; color: var(--muted); font-size: 0.95rem">
+              Every gift supports real programs: meals, clean water, classrooms, and livelihood training — with clear
+              reporting back to donors.
+            </p>
+            <div class="stat-row" role="presentation">
+              <div class="stat">
+                <strong>50K+</strong>
+                <span>Lives touched</span>
+              </div>
+              <div class="stat">
+                <strong>15+</strong>
+                <span>Countries</span>
+              </div>
+              <div class="stat">
+                <strong>10+</strong>
+                <span>Years</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <h2 class="section-title">About Rafiki</h2>
+          <p class="section-sub">
+            <strong>Rafiki</strong> means “friend” in Swahili. We believe dignity and compassion go together — emergency
+            relief when crisis hits, and long-term support so communities can stand on their own.
+          </p>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Compassion first</h3>
+              <p>We listen to communities and design aid that respects culture, safety, and choice.</p>
+            </article>
+            <article class="card">
+              <h3>Transparency</h3>
+              <p>Donors deserve clarity. We track outcomes and share how funds are used.</p>
+            </article>
+            <article class="card">
+              <h3>Sustainability</h3>
+              <p>Beyond aid: training, small business support, and infrastructure that lasts.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="impact" style="background: var(--surface)">
+        <div class="container">
+          <h2 class="section-title">Impact you can feel</h2>
+          <p class="section-sub">
+            Schools built, wells drilled, families housed — numbers that represent neighbors, not statistics alone.
+          </p>
+          <div class="card-grid">
+            <article class="card">
+              <h3>Education</h3>
+              <p>Scholarships, supplies, and safe classrooms for children who dream big.</p>
+            </article>
+            <article class="card">
+              <h3>Health &amp; water</h3>
+              <p>Clinics, nutrition, and clean water where illness once spread unchecked.</p>
+            </article>
+            <article class="card">
+              <h3>Livelihoods</h3>
+              <p>Skills, tools, and micro-grants so parents can provide for their families.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="donate" id="donate">
+        <div class="container">
+          <h2 class="section-title" style="color: #fff">Support the mission</h2>
+          <p class="section-sub">
+            Give in minutes. Choose M-Pesa or bank transfer after you submit — we’ll guide you on the next step.
+          </p>
+          <div class="donate-grid">
+            <div>
+              <p style="margin: 0 0 1rem; color: rgba(255, 255, 255, 0.92); max-width: 52ch">
+                Your donation is recorded in our system immediately. For production, connect a payment provider (e.g.
+                Stripe or M-Pesa API) — this form talks to the project’s <code>/api/donations</code> endpoint.
+              </p>
+              <ul style="margin: 0; padding-left: 1.2rem; color: rgba(255, 255, 255, 0.9)">
+                <li>Secure JSON API (PostgreSQL via Sequelize)</li>
+                <li>Email receipts can be added later</li>
+                <li>Questions? <a href="mailto:info@rafikihelpme.org" style="text-decoration: underline">Email us</a></li>
+              </ul>
+            </div>
+            <form class="donate-form" data-donation-form novalidate>
+              <label for="donor_name">Full name</label>
+              <input id="donor_name" name="donor_name" type="text" required autocomplete="name" />
+
+              <label for="donor_email">Email</label>
+              <input id="donor_email" name="donor_email" type="email" required autocomplete="email" />
+
+              <label for="amount">Amount</label>
+              <input id="amount" name="amount" type="number" min="1" step="0.01" required />
+
+              <label for="payment_method">Payment method</label>
+              <select id="payment_method" name="payment_method" required>
+                <option value="">Choose one</option>
+                <option value="mpesa">M-Pesa</option>
+                <option value="bank">Bank transfer</option>
+              </select>
+
+              <label for="message">Message (optional)</label>
+              <textarea id="message" name="message" placeholder="Why this matters to you"></textarea>
+
+              <button class="btn btn-primary btn-block" type="submit">Submit donation</button>
+              <p class="form-msg" data-form-msg role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <p>&copy; <span id="y"></span> Rafiki Help Me International. “A friend can need help.”</p>
+        <p>
+          <a href="/api/health">API health</a>
+          ·
+          <a href="/index1.html">Classic landing</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('y').textContent = new Date().getFullYear();
+    </script>
+    <script src="/js/main.js" defer></script>
+  </body>
+</html>

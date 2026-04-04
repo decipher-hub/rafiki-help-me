@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <script>
+        async function fetchUserProfile() {
+            // Fetch user profile information
+            const response = await fetch('/api/user/profile');
+            const data = await response.json();
+            document.getElementById('username').innerText = data.username;
+            document.getElementById('email').innerText = data.email;
+        }
+
+        async function fetchDonationHistory() {
+            // Fetch donation history
+            const response = await fetch('/api/donations/all');
+            const donations = await response.json();
+            const donationsList = document.getElementById('donation-history');
+            donations.forEach(donation => {
+                const li = document.createElement('li');
+                li.innerText = `Amount: ${donation.amount}, Date: ${donation.date}`;
+                donationsList.appendChild(li);
+            });
+        }
+
+        async function uploadAvatar(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            await fetch('/api/upload/avatar', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+
+        window.onload = function() {
+            fetchUserProfile();
+            fetchDonationHistory();
+        };
+    </script>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    <div>
+        <h2>User Profile</h2>
+        <p>Username: <span id="username"></span></p>
+        <p>Email: <span id="email"></span></p>
+        <input type="file" accept="image/*" onchange="uploadAvatar(event)"> Upload Avatar
+    </div>
+    <div>
+        <h2>Donation History</h2>
+        <ul id="donation-history"></ul>
+    </div>
+    <button onclick="logout()">Logout</button>
+</body>
+</html>

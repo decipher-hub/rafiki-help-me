@@ -1,21 +1,78 @@
-// models/User.js
-export async function createUser(email, password) {
-    // Validate email format
-    if (!isValidEmail(email)) throw new Error('Invalid email');
-    
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    // Insert into database
-    const [result] = await db.query(
-      'INSERT INTO users (email, password) VALUES (?, ?)',
-      [email, hashedPassword]
-    );
-    
-    return result.insertId;
+import bcrypt from 'bcrypt';
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../config/database.js';
+
+class User extends Model {
+  /**
+   * @param {string} email
+   */
+  static async findByEmailWithPassword(email) {
+    const normalized = String(email).trim().toLowerCase();
+    return User.scope('withPassword').findOne({ where: { email: normalized } });
   }
-  
-  export async function getUserById(id) {
-    const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
-    return rows[0];
+}
+
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+        notEmpty: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      validate: {
+        len: [6, 128],
+      },
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    avatar_url: {
+      type: DataTypes.STRING(512),
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    underscored: true,
+    hooks: {
+      beforeValidate: (user) => {
+        if (user.email) {
+          user.setDataValue('email', String(user.email).trim().toLowerCase());
+        }
+      },
+      beforeCreate: async (user) => {
+        if (user.password && !String(user.password).startsWith('$2')) {
+          user.password = await bcrypt.hash(String(user.password), 10);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed('password') && user.password && !String(user.password).startsWith('$2')) {
+          user.password = await bcrypt.hash(String(user.password), 10);
+        }
+      },
+    },
+    defaultScope: {
+      attributes: { exclude: ['password'] },
+    },
+    scopes: {
+      withPassword: { attributes: { include: ['password'] } },
+    },
   }
+);
+
+export default User;
